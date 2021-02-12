@@ -38,7 +38,7 @@ test("Form can be filled out, submit adds new info", async () => {
   });
 
   // Data Query
-  const firstNameResult = screen.findByText(/cha/i);
+  const firstNameResult = screen.getByText(/cha/i);
   // Assert
   expect(firstNameResult).toBeInTheDocument();
 });
