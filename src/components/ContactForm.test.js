@@ -1,21 +1,20 @@
 import React from "react";
-import { queryByText, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ContactForm from "./ContactForm";
+import { act } from "react-dom/test-utils";
 
 test("renders without errors", () => {
   render(<ContactForm />);
 });
 
-test("Form can be filled out, submit adds new info", () => {
+test("Form can be filled out, submit adds new info", async () => {
   // Render
   render(<ContactForm />);
   // Input Queries
-  // const firstNameInput = screen.getByLabelText(/first name/i)
-  const firstNameInput = screen.getByPlaceholderText(/edd/i);
+  const firstNameInput = screen.getByLabelText(/first name/i);
   const lastNameInput = screen.getByLabelText(/last name/i);
-  // const emailInput = screen.getByLabelText(/email/i)
-  const emailInput = screen.getByPlaceholderText(/bluebill1049@hotmail.com/i);
+  const emailInput = screen.getByLabelText(/email/i);
   const messageInput = screen.getByLabelText(/message/i);
 
   // Can type into inputs
@@ -31,6 +30,20 @@ test("Form can be filled out, submit adds new info", () => {
   expect(messageInput).toHaveValue("ChezzyChaz!!");
 
   // Button Query
-  const button = screen.getByRole("button") // Apparently this is a BUTTON!!!!
-  
+  const button = screen.getByRole("button");
+
+  // Button Click
+  await act(async () => {
+    userEvent.click(button);
+  });
+
+  // Data Query
+  const firstNameResult = screen.findByText(/cha/i);
+  // Assert
+  expect(firstNameResult).toBeInTheDocument();
 });
+
+// "firstName": "cha",
+// "lastName": "Chez",
+// "email": "Chaz@Chez.com",
+// "message": "ChezzyChaz!!"
